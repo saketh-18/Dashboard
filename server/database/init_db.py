@@ -1,4 +1,5 @@
 import os
+import ssl
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -9,19 +10,19 @@ if DATABASE_URL:
     elif DATABASE_URL.startswith("postgresql://"):
         DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
     
-    if "sslmode=" in DATABASE_URL:
-        base_url = DATABASE_URL.split("?")[0]
-        DATABASE_URL = base_url
+    if "?" in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL.split("?")[0]
 else:
     DATABASE_URL = "postgresql+asyncpg://postgres:saketh@localhost:5432/Dashboard"
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
 engine = create_async_engine(
     DATABASE_URL,
     echo=True,
-    future=True,
-    connect_args={
-        "ssl": True
-    }
+    connect_args={"ssl": ctx}
 )
 
 async_session = async_sessionmaker(

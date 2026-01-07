@@ -4,7 +4,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if DATABASE_URL:
+IS_CLOUD = DATABASE_URL is not None
+
+if IS_CLOUD:
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
     elif DATABASE_URL.startswith("postgresql://"):
@@ -12,17 +14,20 @@ if DATABASE_URL:
     
     if "?" in DATABASE_URL:
         DATABASE_URL = DATABASE_URL.split("?")[0]
+    
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    connect_args = {"ssl": ctx}
 else:
+    # Local Development
     DATABASE_URL = "postgresql+asyncpg://postgres:saketh@localhost:5432/Dashboard"
-
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
+    connect_args = {}
 
 engine = create_async_engine(
     DATABASE_URL,
     echo=True,
-    connect_args={"ssl": ctx}
+    connect_args=connect_args  # This will be empty on local, and have SSL on Cloud
 )
 
 async_session = async_sessionmaker(

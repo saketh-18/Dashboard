@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "https://dashboard-0z1c.onrender.com";
 
 const getToken = () =>
   typeof window !== "undefined" ? localStorage.getItem("token") : null;

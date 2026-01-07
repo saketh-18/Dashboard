@@ -12,7 +12,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "https://dashboard-0z1c.onrender.com"
 
   const handleRegister = async () => {
     setError("");

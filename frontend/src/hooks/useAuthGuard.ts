@@ -1,6 +1,6 @@
 "use client";
 
-import { LogoutStore } from "@/stores/logout-store";
+import { LogoutStore } from "../../stores/logout-store";
 import { useEffect, useState } from "react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
@@ -45,8 +45,7 @@ export function useAuthGuard() {
     }
 
     fetchProfile();
-  }, [ logout ]);
+  }, [logout]);
 
   return { checking, checked };
 }
-

@@ -4,14 +4,15 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { LogoutStore } from "@/stores/logout-store";
+import { LogoutStore } from "../../../stores/logout-store";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "https://dashboard-0z1c.onrender.com";
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_BASE ?? "https://dashboard-0z1c.onrender.com";
 
   const handleLogin = async () => {
     setError("");
